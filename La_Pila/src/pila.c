@@ -18,9 +18,9 @@ int main()
     scanf("%99[^\n]%*c", expresion);
     printf("La cadena ingresada es: %s\n", expresion);
 
-    imprimePila(nombre);
+    imprimeStack(nombre);
 
-    PAUSA;
-    CLS;
+    UbPausa;
+    UbClear;
     return 0;
 }
