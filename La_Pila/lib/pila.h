@@ -24,7 +24,7 @@ nodo *push(nodo *, char);
 nodo *pop(nodo *, char *);
 int isEmpty(nodo *);
 char peek(nodo *);
-void imprimePila(nodo *raiz);
+void imprimeStack(nodo *raiz);
 
 nodo *push(nodo *peek, char dato)
 {
@@ -45,7 +45,7 @@ nodo *push(nodo *peek, char dato)
 nodo *pop(nodo *peek, char *dato)
 {
     nodo *recorre = NULL;
-    nodo *primero = NULL;
+    nodo *first = NULL;
     // si la lista esta vacia
     if (peek == NULL)
     {
@@ -53,10 +53,10 @@ nodo *pop(nodo *peek, char *dato)
         return NULL;
     } // previene el underflow
     recorre = peek;
-    primero = recorre->sig;
+    first = recorre->sig;
     recorre->sig = peek;
     *dato = recorre->info;
-    peek = primero;
+    peek = first;
     free(recorre);
     return peek;
 }
@@ -81,7 +81,7 @@ char peek(nodo *peek)
     return peek->info;
 }
 
-void imprimePila(nodo *peek)
+void imprimeStack(nodo *peek)
 {
     nodo *recorre = peek;
     while (recorre != NULL)
