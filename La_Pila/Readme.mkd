@@ -1,0 +1,19 @@
+## Empezando con el programa
+
+El proyecto tiene dos carpetas: `lib` y `sources`. En la carpeta lib se encuentran las librerías .h que contienen las declaraciones de funciones y constantes.
+En la carpeta `sources` se encuentra el código principal a programar. Como estamos en VS Code y tenemos dos carpetas separadas, para agregar el .h al .c es necesario la siguiente sintaxis: `../lib/(nombre del archivo).h`.
+
+## Estructura de los folders
+
+- `sources`: Programas principales
+- `lib`: Librerías del proyecto
+
+## compilando múltiples .c
+
+si se utiliza el compilador gcc para archivos .c basta con seguir el siguiente comando
+`gcc -o 'nombre del ejecutable' (nombre del archivo).c ...`
+
+## Ejecutando programas
+
+con gcc la ejecución se llevara acabo con el archivo anteriormente generado
+`./'nombre del ejecutable'`
