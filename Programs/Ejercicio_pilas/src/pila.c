@@ -8,14 +8,9 @@ int main()
 {
     expresion = (char *)malloc(maxLen * sizeof(char));
 
-    nodo *nombre = NULL;
-    nombre = push(nombre, 'T');
-    nombre = push(nombre, 'E');
-    nombre = push(nombre, 'F');
-    nombre = push(nombre, 'A');
-    nombre = push(nombre, 'J');
-
-    imprimeStack(nombre);
+    printf("Ingrese una expresión Mátematica: ");
+    scanf("%99[^\n]%*c", expresion);
+    printf("La cadena ingresada es: %s\n", expresion);
 
     PAUSA;
     CLS;
