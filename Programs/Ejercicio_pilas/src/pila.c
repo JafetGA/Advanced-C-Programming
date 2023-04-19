@@ -1,31 +1,21 @@
-#include "../lib/pila.h"
+#include <stdio.h>
+#include <stdlib.h>
+
 int prec(char, char);
+void postfijo(char *);
 
 const int maxLen = 80;
 char *expresion;
 
 int main()
 {
-    expresion = (char *)malloc(maxLen * sizeof(char));
+
+    expresion = (char *)calloc(maxLen, sizeof(char));
 
     printf("Ingrese una expresión Mátematica: ");
     scanf("%99[^\n]%*c", expresion);
-    printf("La cadena ingresada es: %s\n", expresion);
+    // printf("La cadena ingresada es: %s\n", expresion);
 
-    PAUSA;
-    CLS;
+    postfijo(expresion);
     return 0;
-}
-
-int prec(char op1, char op2)
-{
-    switch (op1)
-    {
-    case '^':
-
-        break;
-
-    default:
-        break;
-    }
 }
