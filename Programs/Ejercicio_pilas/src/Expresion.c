@@ -5,7 +5,7 @@ nodo *pila = NULL;
 
 int prec(char op1, char op2)
 {
-    int jer1, jer2; // Valores jerarquicos
+    int jer1, jer2; // Valores jerárquicos
     switch (op1)
     {
     case '^':

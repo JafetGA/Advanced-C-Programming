@@ -12,7 +12,7 @@ int main()
 
     expresion = (char *)calloc(maxLen, sizeof(char));
 
-    printf("Ingrese una expresión Mátematica: ");
+    printf("Ingrese una expresión Matemática: ");
     scanf("%99[^\n]%*c", expresion);
     // printf("La cadena ingresada es: %s\n", expresion);
 
