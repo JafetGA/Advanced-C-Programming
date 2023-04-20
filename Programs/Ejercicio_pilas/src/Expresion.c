@@ -103,6 +103,9 @@ void postfijo(char *expresion)
 
     // Imprimir el resultado
     printf("La expresion en postfijo es: %s\n", postfijo);
-    PAUSA;
-    CLS;
+    UbPausa;
+    UbClear;
+    
+    // PAUSA;
+    // CLS;
 }
