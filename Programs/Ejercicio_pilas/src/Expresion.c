@@ -69,10 +69,12 @@ int esOperador(char dato)
 void postfijo(char *expresion)
 {
     // nodo *pila = NULL;
-    int i = 0, j = 0;
+    int i, j = 0;
     char postfijo[strlen(expresion)], symb, topSymb;
 
-    for (i = 0; i < strlen(expresion); i++)
+    i = 0;
+
+    while (expresion[i] != '\0')
     {
         symb = expresion[i];
         if (symb == ' ' || symb == '\t')
@@ -80,19 +82,23 @@ void postfijo(char *expresion)
             continue;
         }
         else if (esOperador(symb))
-
         {
             while (!isEmpty(pila) && prec(peek(pila), symb))
             {
                 pila = pop(pila, &topSymb);
                 postfijo[j++] = topSymb;
             }
-            pila = push(pila, symb);
+            if (isEmpty(pila) || symb != ')')
+                pila = push(pila, symb);
+            else
+                pila = pop(pila, &topSymb);
         }
         else
         {
             postfijo[j++] = symb;
         }
+
+        i++;
     }
     while (!isEmpty(pila))
     {
@@ -105,7 +111,50 @@ void postfijo(char *expresion)
     printf("La expresion en postfijo es: %s\n", postfijo);
     UbPausa;
     UbClear;
-    
+
     // PAUSA;
     // CLS;
 }
+// void postfijo(char *expresion)
+// {
+//     // nodo *pila = NULL;
+//     int i = 0, j = 0;
+//     char postfijo[strlen(expresion)], symb, topSymb;
+
+//     for (i = 0; i < strlen(expresion); i++)
+//     {
+//         symb = expresion[i];
+//         if (symb == ' ' || symb == '\t')
+//         {
+//             continue;
+//         }
+//         else if (esOperador(symb))
+
+//         {
+//             while (!isEmpty(pila) && prec(peek(pila), symb))
+//             {
+//                 pila = pop(pila, &topSymb);
+//                 postfijo[j++] = topSymb;
+//             }
+//             pila = push(pila, symb);
+//         }
+//         else
+//         {
+//             postfijo[j++] = symb;
+//         }
+//     }
+//     while (!isEmpty(pila))
+//     {
+//         pila = pop(pila, &topSymb);
+//         postfijo[j++] = topSymb;
+//     }
+//     postfijo[j] = '\0';
+
+//     // Imprimir el resultado
+//     printf("La expresion en postfijo es: %s\n", postfijo);
+//     UbPausa;
+//     UbClear;
+
+//     // PAUSA;
+//     // CLS;
+// }

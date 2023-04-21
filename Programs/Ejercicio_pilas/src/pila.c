@@ -16,6 +16,9 @@ int main()
     scanf("%99[^\n]%*c", expresion);
     // printf("La cadena ingresada es: %s\n", expresion);
 
+    // printf("|%d|\n", prec('(', ')'));
+    // printf("|%d|\n", prec('-', ')'));
+
     postfijo(expresion);
     return 0;
 }
