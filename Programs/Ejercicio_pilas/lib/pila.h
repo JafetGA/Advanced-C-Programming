@@ -46,10 +46,10 @@ nodo *pop(nodo *peek, char *dato)
 {
     nodo *recorre = NULL;
     nodo *first = NULL;
-    // si la lista esta vacia
+    // si la lista esta vacía
     if (peek == NULL)
     {
-        printf("La lista esta vacia.\nNo hay nada que remover.\n");
+        printf("La lista esta vacía.\nNo hay nada que remover.\n");
         return NULL;
     } // previene el underflow
     recorre = peek;
@@ -74,7 +74,7 @@ char peek(nodo *peek)
 
     if (peek == NULL)
     {
-        printf("La lista esta vacia.\nNo hay nada que remover.\n");
+        printf("La lista esta vacía.\nNo hay nada que remover.\n");
         return '\0';
     }
 

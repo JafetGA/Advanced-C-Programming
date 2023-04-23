@@ -1,6 +1,7 @@
 #include <stdio.h>
 #include <stdlib.h>
 
+int profundidad(char *);
 int prec(char, char);
 void postfijo(char *);
 
@@ -14,11 +15,16 @@ int main()
 
     printf("Ingrese una expresión Matemática: ");
     scanf("%99[^\n]%*c", expresion);
-    // printf("La cadena ingresada es: %s\n", expresion);
-
-    // printf("|%d|\n", prec('(', ')'));
-    // printf("|%d|\n", prec('-', ')'));
 
     postfijo(expresion);
+    //  printf("%d\n", prec('^', ')'));
+    //  printf("%d\n", prec('*', ')'));
+    //  printf("%d\n", prec('/', ')'));
+    //  printf("%d\n", prec('+', ')'));
+    //  printf("%d\n", prec('-', ')'));
+    //  printf("%d\n", prec('(', ')'));
+    //  printf("%d\n", prec(')', ')'));
+    //  printf("%d\n", prec('(', '('));
+    // system("pause");
     return 0;
 }
