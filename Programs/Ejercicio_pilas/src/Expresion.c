@@ -1,52 +1,42 @@
 #include "../lib/pila.h"
 #include <string.h>
+#include <stdbool.h>
 nodo *pila;
-// int profundidad(char *expresion)
-// {
-//     pila = NULL;
-//     char symb, temp;
-//     int i = 0;
-//     while (expresion[i] != '\0')
-//     {
-//         symb = expresion[i];
-//         if (symb == '(' || symb == '[' || symb == '{')
-//         {
-//             pila = push(pila, symb);
-//         }
-//         else if (symb == ')' || symb == ']' || symb == '}')
-//         {
-//             if (isEmpty(pila))
-//             {
-//                 return 0;
-//             }
-//             else
-//             {
-//                 pila = pop(pila, &temp);
-//                 if (symb == ')' && temp != '(')
-//                 {
-//                     return 0;
-//                 }
-//                 else if (symb == ']' && temp != '[')
-//                 {
-//                     return 0;
-//                 }
-//                 else if (symb == '}' && temp != '{')
-//                 {
-//                     return 0;
-//                 }
-//             }
-//         }
-//         i++;
-//     }
-//     if (!isEmpty(pila))
-//     {
-//         return 0;
-//     }
-//     else
-//     {
-//         return 1;
-//     }
-// }
+
+int profundidad (char *expresion){
+	int i = 0;
+	char symb, temp;
+    bool equal = false;
+    pila = NULL;
+        while(expresion[i]!= '\0'){ // Caracter final de una cadena  '\0'
+		symb = expresion[i];
+		if(symb == '(' || symb == '{' || symb== '['){
+			pila = push(pila,symb);
+		}
+		if(symb == ')' || symb == '}' || symb== ']'){
+			if(isEmpty(pila)){
+				equal = false;
+			}
+			else{
+				pila = pop(pila, &temp);
+                if(symb == ')') symb = '(';
+                else if (symb == '}') symb = '{';
+                else symb = '[';
+                if(temp != symb ){
+                    equal = false;
+                }
+                else{
+                    equal = true; 
+                } 
+			}
+		}
+        i++;
+	}
+    if(!isEmpty(pila)){
+        return equal;
+    }
+    else return equal;
+}
 
 int prec(char op1, char op2)
 {
@@ -151,5 +141,5 @@ void postfijo(char *expresion)
     }
     postfijo[j] = '\0';
     printf("La expresión en postfijo es: %s\n", postfijo);
-    PAUSA;
+    UbPausa;
 }

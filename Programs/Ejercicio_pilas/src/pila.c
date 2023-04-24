@@ -15,16 +15,11 @@ int main()
 
     printf("Ingrese una expresión Matemática: ");
     scanf("%99[^\n]%*c", expresion);
-
+    
+   if(profundidad(expresion)){
     postfijo(expresion);
-    //  printf("%d\n", prec('^', ')'));
-    //  printf("%d\n", prec('*', ')'));
-    //  printf("%d\n", prec('/', ')'));
-    //  printf("%d\n", prec('+', ')'));
-    //  printf("%d\n", prec('-', ')'));
-    //  printf("%d\n", prec('(', ')'));
-    //  printf("%d\n", prec(')', ')'));
-    //  printf("%d\n", prec('(', '('));
-    // system("pause");
+   }
+    
+    
     return 0;
 }

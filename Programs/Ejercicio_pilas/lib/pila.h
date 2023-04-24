@@ -32,7 +32,7 @@ nodo *push(nodo *peek, char dato)
     nuevo = (nodo *)malloc(sizeof(nodo));
     if (nuevo == NULL)
     { // Prevenir overflow
-        printf("Error: no hay memoria disponible \n");
+    printf("Error: no hay memoria disponible \n");
         exit(1);
     }
     nuevo->info = dato;
