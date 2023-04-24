@@ -142,4 +142,5 @@ void postfijo(char *expresion)
     postfijo[j] = '\0';
     printf("La expresión en postfijo es: %s\n", postfijo);
     UbPausa;
+    UbClear;
 }
