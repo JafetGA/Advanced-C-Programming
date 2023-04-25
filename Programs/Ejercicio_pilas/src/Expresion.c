@@ -1,49 +1,63 @@
 #include "../lib/pila.h"
 #include <string.h>
 #include <stdbool.h>
-nodo *pila;
+#include <ctype.h>
 
-int profundidad (char *expresion){
-	int i = 0;
-	char symb, temp;
-    bool equal = false;
+nodo *pila;
+int profundidad(char *expresion)
+{
+    int i = 0;
+    char symb, temp;
+    bool equal = true;
     pila = NULL;
-        while(expresion[i]!= '\0'){ // Caracter final de una cadena  '\0'
-		symb = expresion[i];
-		if(symb == '(' || symb == '{' || symb== '['){
-			pila = push(pila,symb);
-		}
-		if(symb == ')' || symb == '}' || symb== ']'){
-			if(isEmpty(pila)){
-				equal = false;
-			}
-			else{
-				pila = pop(pila, &temp);
-                if(symb == ')') symb = '(';
-                else if (symb == '}') symb = '{';
-                else symb = '[';
-                if(temp != symb ){
+    while (expresion[i] != '\0')
+    { // Carácter final de una cadena  '\0'
+        symb = expresion[i];
+        if (symb == '(' || symb == '{' || symb == '[')
+        {
+            pila = push(pila, symb);
+        }
+        if (symb == ')' || symb == '}' || symb == ']')
+        {
+            if (isEmpty(pila))
+            {
+                equal = false;
+            }
+            else
+            {
+                pila = pop(pila, &temp);
+                if (symb == ')')
+                    symb = '(';
+                else if (symb == '}')
+                    symb = '{';
+                else
+                    symb = '[';
+                if (temp != symb)
+                {
                     equal = false;
                 }
-                else{
-                    equal = true; 
-                } 
-			}
-		}
+                else
+                {
+                    equal = true;
+                }
+            }
+        }
         i++;
-	}
-    if(!isEmpty(pila)){
+    }
+    if (!isEmpty(pila))
+    {
         return equal;
     }
-    else return equal;
+    return equal;
 }
-
 int prec(char op1, char op2)
 {
     int jer1, jer2;
     switch (op1)
     {
     case '(':
+    case '[':
+    case '{':
         jer1 = -2;
         break;
     case '^':
@@ -65,6 +79,8 @@ int prec(char op1, char op2)
     switch (op2)
     {
     case ')':
+    case ']':
+    case '}':
         jer2 = -1;
         break;
     case '^':
@@ -104,33 +120,40 @@ void postfijo(char *expresion)
     while (expresion[i] != '\0')
     {
         symb = expresion[i];
-        if ((symb >= 'A' && symb <= 'Z') || (symb >= '0' && symb <= '9') || (symb >= 'a' && symb <= 'z'))
+        if (isalnum(symb))
         {
             postfijo[j++] = symb;
         }
+        else if (symb == '(' || symb == '[' || symb == '{')
+        {
+            pila = push(pila, symb);
+        }
+        else if (symb == ')' || symb == ']' || symb == '}')
+        {
+            char openSymb;
+            if (symb == ')')
+                openSymb = '(';
+            else if (symb == ']')
+                openSymb = '[';
+            else if (symb == '}')
+                openSymb = '{';
+
+            while (!isEmpty(pila) && peek(pila) != openSymb)
+            {
+                pila = pop(pila, &topSymb);
+                postfijo[j++] = topSymb;
+            }
+            if (!isEmpty(pila) && peek(pila) == openSymb)
+                pila = pop(pila, &topSymb);
+        }
         else
         {
-            if (isEmpty(pila) || symb == '(' || peek(pila) == '(')
-                pila = push(pila, symb);
-            else if (symb == ')')
+            while (!isEmpty(pila) && prec(peek(pila), symb))
             {
-                while (!isEmpty(pila) && peek(pila) != '(')
-                {
-                    pila = pop(pila, &topSymb);
-                    postfijo[j++] = topSymb;
-                }
-                if (!isEmpty(pila) && peek(pila) == '(')
-                    pila = pop(pila, &topSymb);
+                pila = pop(pila, &topSymb);
+                postfijo[j++] = topSymb;
             }
-            else
-            {
-                while (!isEmpty(pila) && prec(peek(pila), symb))
-                {
-                    pila = pop(pila, &topSymb);
-                    postfijo[j++] = topSymb;
-                }
-                pila = push(pila, symb);
-            }
+            pila = push(pila, symb);
         }
         i++;
     }
@@ -141,6 +164,5 @@ void postfijo(char *expresion)
     }
     postfijo[j] = '\0';
     printf("La expresión en postfijo es: %s\n", postfijo);
-    UbPausa;
-    UbClear;
+    PAUSA;
 }
