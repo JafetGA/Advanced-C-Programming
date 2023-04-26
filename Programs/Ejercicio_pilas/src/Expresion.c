@@ -166,3 +166,45 @@ void postfijo(char *expresion)
     printf("La expresión en postfijo es: %s\n", postfijo);
     PAUSA;
 }
+
+float convierte(char car){
+	return(atof(car));
+}
+
+float evalua(float opnd1, char sign, float opnd2){
+	switch (sign){
+		case '^': return pow(opnd1,opnd2); break;
+		case '+': return opnd1 + opnd2; break;
+		case '-': return opnd1 - opnd2; break;
+		case '/': return opnd1 / opnd2; break;
+		case '*': return opnd1 * opnd2; break;
+	}
+	
+}
+
+float evaluarPostfijo(char *expresion){
+	float opnd1, opnd2, value;
+	char symb, aux;
+	int i = 0;
+	pila = NULL;
+	
+	while (expresion[i]!= '\0'){
+		symb = expresion[i];
+		if (symb >= '0' && symb <= '9' ){
+			pila = push(pila, symb);
+		}
+		else{
+			pila = pop(pila, &opnd2);
+			convierte(opnd2);
+			pila = pop(pila, &opnd1);
+			convierte(opnd1);
+			value = evalua(opnd1, symb, opnd2);
+			pila = push (pila, &value);
+		}
+		i++;
+	}
+	pila = pop(pila, &aux);
+	aux = convierte(aux);
+	return aux;
+	PAUSA;
+}
