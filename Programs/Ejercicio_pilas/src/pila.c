@@ -4,6 +4,9 @@
 int profundidad(char *);
 int prec(char, char);
 void postfijo(char *);
+float convierte(char);
+float evalua(float, char, float);
+float evaluarPostfijo(char *);
 
 const int maxLen = 80;
 char *expresion;
