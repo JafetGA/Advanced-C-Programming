@@ -3,7 +3,7 @@
 
 int profundidad(char *);
 int prec(char, char);
-void postfijo(char *);
+char *postfijo(char *);
 float convierte(char);
 float evalua(float, char, float);
 float evaluarPostfijo(char *);
@@ -13,16 +13,19 @@ char *expresion;
 
 int main()
 {
-
     expresion = (char *)calloc(maxLen, sizeof(char));
 
-    printf("Ingrese una expresión Matemática: ");
-    scanf("%99[^\n]%*c", expresion);
-
-    if (profundidad(expresion))
+    while (1)
     {
-        postfijo(expresion);
-    }
+        printf("Ingrese una expresión Matemática: ");
+        scanf("%99[^\n]%*c", expresion);
 
+        if (profundidad(expresion))
+        {
+
+            printf("%f\n", evaluarPostfijo(postfijo(expresion)));
+        }
+        system("pause");
+    }
     return 0;
 }

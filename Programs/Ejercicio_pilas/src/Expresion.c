@@ -2,22 +2,23 @@
 #include <string.h>
 #include <stdbool.h>
 #include <ctype.h>
+#include <math.h>
 
 nodo *pila;
 int profundidad(char *expresion)
 {
     int i = 0;
-    char symb, temp;
+    data symb, temp;
     bool equal = true;
-    pila = NULL;
+    nodo *pila = NULL; // agregamos la declaración de la pila
     while (expresion[i] != '\0')
-    { // Carácter final de una cadena  '\0'
-        symb = expresion[i];
-        if (symb == '(' || symb == '{' || symb == '[')
+    {
+        symb.x = expresion[i];
+        if (symb.x == '(' || symb.x == '{' || symb.x == '[')
         {
-            pila = push(pila, symb);
+            pila = push(pila, symb, 0); // usamos la función push para agregar el símbolo de apertura a la pila
         }
-        if (symb == ')' || symb == '}' || symb == ']')
+        if (symb.x == ')' || symb.x == '}' || symb.x == ']')
         {
             if (isEmpty(pila))
             {
@@ -25,14 +26,14 @@ int profundidad(char *expresion)
             }
             else
             {
-                pila = pop(pila, &temp);
-                if (symb == ')')
-                    symb = '(';
-                else if (symb == '}')
-                    symb = '{';
+                pila = pop(pila, &temp); // usamos la función pop para obtener el último símbolo de apertura de la pila
+                if (symb.x == ')')
+                    symb.x = '(';
+                else if (symb.x == '}')
+                    symb.x = '{';
                 else
-                    symb = '[';
-                if (temp != symb)
+                    symb.x = '[';
+                if (temp.x != symb.x) // comparamos los símbolos de apertura y cierre
                 {
                     equal = false;
                 }
@@ -44,12 +45,13 @@ int profundidad(char *expresion)
         }
         i++;
     }
-    if (!isEmpty(pila))
+    if (!isEmpty(pila)) // si la pila no está vacía, entonces hay símbolos de apertura sin su respectivo cierre
     {
-        return equal;
+        equal = false;
     }
-    return equal;
+    return equal; // retornamos el valor de igualdad
 }
+
 int prec(char op1, char op2)
 {
     int jer1, jer2;
@@ -107,104 +109,119 @@ int prec(char op1, char op2)
     else
         return 0;
 }
-
-void postfijo(char *expresion)
+char *postfijo(char *expresion)
 {
-    char symb, topSymb;
-    char *postfijo;
-    int i, j;
     pila = NULL;
+    data symb, topSymb;
+    char *postfijo;
     postfijo = (char *)calloc(strlen(expresion), sizeof(char));
-    j = 0;
+    int i, j;
     i = 0;
+    j = 0;
+
     while (expresion[i] != '\0')
     {
-        symb = expresion[i];
-        if (isalnum(symb))
+        symb.x = expresion[i];
+        if (isalnum(symb.x))
         {
-            postfijo[j++] = symb;
+            postfijo[j++] = symb.x;
         }
-        else if (symb == '(' || symb == '[' || symb == '{')
+        else if (symb.x == '(' || symb.x == '{' || symb.x == '[')
         {
-            pila = push(pila, symb);
+            pila = push(pila, symb, 0);
         }
-        else if (symb == ')' || symb == ']' || symb == '}')
+        else if (symb.x == ')' || symb.x == '}' || symb.x == ']')
         {
-            char openSymb;
-            if (symb == ')')
-                openSymb = '(';
-            else if (symb == ']')
-                openSymb = '[';
-            else if (symb == '}')
-                openSymb = '{';
-
-            while (!isEmpty(pila) && peek(pila) != openSymb)
+            char opnSymb;
+            if (symb.x == ')')
+                opnSymb = '(';
+            if (symb.x == ']')
+                opnSymb = '[';
+            if (symb.x == '}')
+                opnSymb = '{';
+            while (!isEmpty(pila) && peek(pila).x != opnSymb)
             {
                 pila = pop(pila, &topSymb);
-                postfijo[j++] = topSymb;
+                postfijo[j++] = topSymb.x;
             }
-            if (!isEmpty(pila) && peek(pila) == openSymb)
+            if (!isEmpty(pila) && peek(pila).x == opnSymb)
+            {
                 pila = pop(pila, &topSymb);
+            }
         }
         else
         {
-            while (!isEmpty(pila) && prec(peek(pila), symb))
+            while (!isEmpty(pila) && prec(peek(pila).x, symb.x))
             {
                 pila = pop(pila, &topSymb);
-                postfijo[j++] = topSymb;
+                postfijo[j++] = topSymb.x;
             }
-            pila = push(pila, symb);
+            pila = push(pila, symb, 0);
         }
         i++;
     }
     while (!isEmpty(pila))
     {
         pila = pop(pila, &topSymb);
-        postfijo[j++] = topSymb;
+        postfijo[j++] = topSymb.x;
     }
     postfijo[j] = '\0';
     printf("La expresión en postfijo es: %s\n", postfijo);
+    return postfijo;
+}
+float convierte(char car)
+{
+    double i;
+    i = atof(&car);
+    return i;
+}
+
+float evalua(float opnd1, char sign, float opnd2)
+{
+    switch (sign)
+    {
+    case '^':
+        return pow(opnd1, opnd2);
+        break;
+    case '+':
+        return opnd1 + opnd2;
+        break;
+    case '-':
+        return opnd1 - opnd2;
+        break;
+    case '/':
+        return opnd1 / opnd2;
+        break;
+    case '*':
+        return opnd1 * opnd2;
+        break;
+    }
+}
+
+float evaluarPostfijo(char *expresion)
+{
+    pila = NULL;
+    data symb;
+    data number, opnd1, opnd2, value;
+    int i = 0;
+    while (expresion[i] != '\0')
+    {
+        symb.x = expresion[i];
+        if (symb.x >= '0' && symb.x <= '9')
+        {
+            number.y = convierte(symb.x);
+            pila = push(pila, number, 1);
+        }
+        else
+        {
+            pila = pop(pila, &opnd2);
+            pila = pop(pila, &opnd1);
+            value.y = evalua(opnd1.y, symb.x, opnd2.y);
+            pila = push(pila, value, 1);
+        }
+        i++;
+    }
+    pila = pop(pila, &value);
+    return value.y;
     PAUSA;
-}
-
-float convierte(char car){
-	return(atof(car));
-}
-
-float evalua(float opnd1, char sign, float opnd2){
-	switch (sign){
-		case '^': return pow(opnd1,opnd2); break;
-		case '+': return opnd1 + opnd2; break;
-		case '-': return opnd1 - opnd2; break;
-		case '/': return opnd1 / opnd2; break;
-		case '*': return opnd1 * opnd2; break;
-	}
-	
-}
-
-float evaluarPostfijo(char *expresion){
-	float opnd1, opnd2, value;
-	char symb, aux;
-	int i = 0;
-	pila = NULL;
-	
-	while (expresion[i]!= '\0'){
-		symb = expresion[i];
-		if (symb >= '0' && symb <= '9' ){
-			pila = push(pila, symb);
-		}
-		else{
-			pila = pop(pila, &opnd2);
-			convierte(opnd2);
-			pila = pop(pila, &opnd1);
-			convierte(opnd1);
-			value = evalua(opnd1, symb, opnd2);
-			pila = push (pila, &value);
-		}
-		i++;
-	}
-	pila = pop(pila, &aux);
-	aux = convierte(aux);
-	return aux;
-	PAUSA;
 }
