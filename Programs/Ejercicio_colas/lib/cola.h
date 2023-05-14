@@ -6,19 +6,20 @@
 
 struct Nodo
 {
-    char info;
+    int info;
     struct Nodo *sig;
 };
 
 typedef struct Nodo nodo;
 
 // Prototipos
-nodo *insert(nodo *, char);
-nodo *remueve(nodo *, char *);
+nodo *insert(nodo *, int);
+nodo *remueve(nodo *, int *);
+int size(nodo *);
 void imprimeCola(nodo *);
 
 // Funciones para insertsar Nodos
-nodo *insert(nodo *raiz, char dato)
+nodo *insert(nodo *raiz, int dato)
 {
     nodo *nuevo = NULL;
     nuevo = (nodo *)malloc(sizeof(nodo));
@@ -46,14 +47,14 @@ nodo *insert(nodo *raiz, char dato)
     return raiz;
 }
 
-nodo *remueve(nodo *raiz, char *dato)
+nodo *remueve(nodo *raiz, int *dato)
 {
     nodo *recorre = NULL;
     nodo *primero = NULL;
     // si la lista esta vacia
     if (raiz == NULL)
     {
-        printf("La lista esta vacia.\nNo hay nada que remover.\n");
+        // printf("La lista esta vacia.\nNo hay nada que remover.\n");
         return NULL;
     } // Prevenir el UnderFlow
     recorre = raiz;
@@ -73,12 +74,24 @@ int isEmpty(nodo *raiz)
         return 0;
 }
 
+int size(nodo *raiz)
+{
+    nodo *recorre = raiz;
+    int capacidad = 1;
+    while (recorre != NULL)
+    {
+        capacidad++;
+        recorre = recorre->sig;
+    }
+    return capacidad;
+}
+
 void imprimeCola(nodo *raiz)
 {
     nodo *recorre = raiz;
     while (recorre != NULL)
     {
-        printf("| %c |", recorre->info);
+        printf("| %d |", recorre->info);
         recorre = recorre->sig;
     }
     putchar('\n');
